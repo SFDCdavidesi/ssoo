@@ -17,6 +17,7 @@
         .unit-badge { background: #e2e8f0; color: #475569; padding: 2px 8px; border-radius: 5px; font-size: 0.7rem; font-weight: bold; }
         .question-text { font-size: 1rem; font-weight: 600; margin: 12px 0; line-height: 1.4; }
         .option { padding: 12px; border: 2px solid #f1f5f9; border-radius: 10px; margin-bottom: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; background: #fdfdfd; }
+        .option:hover { border-color: #cbd5e1; }
         .disabled { pointer-events: none; }
         .correct { background: #dcfce7 !important; border-color: var(--success) !important; color: #166534; }
         .wrong { background: #fee2e2 !important; border-color: var(--error) !important; color: #991b1b; }
@@ -25,18 +26,21 @@
     </style>
 </head>
 <body>
+
     <div class="header">
         <div class="stat"><span class="stat-val" id="hits">0</span><span class="stat-label">Aciertos</span></div>
         <div class="stat"><span class="stat-val" id="fails">0</span><span class="stat-label">Fallos</span></div>
         <div class="stat"><span class="stat-val" id="current">0/60</span><span class="stat-label">Progreso</span></div>
         <button class="shuffle-btn" onclick="initQuiz()">🎲 Mezclar y Reiniciar</button>
     </div>
+
     <div class="quiz-container" id="quiz-box"></div>
+
     <div class="overlay" id="overlay"></div>
     <div id="results-modal">
         <h2>🎉 ¡Fin del Test!</h2>
         <div id="final-stats" style="margin: 20px 0; line-height: 2;"></div>
-        <button class="shuffle-btn" onclick="initQuiz(); document.getElementById('results-modal').style.display='none'; document.getElementById('overlay').style.display='none';">🔄 Volver a intentar</button>
+        <button class="shuffle-btn" onclick="closeModal()">🔄 Volver a intentar</button>
     </div>
 
     <script>
@@ -52,7 +56,6 @@
             {u:"UD1", q:"Es falso que la función scanf", o:["Se define en stdio.h.", "Utiliza %d para leer enteros.", "Necesita la dirección de memoria de la variable donde almacena el valor.", "Utiliza %c para leer reales."], c:3},
             {u:"UD1", q:"Podemos considerar que en un computador existen", o:["Sólo dos flujos de entrada: uno de datos y otro de instrucciones.", "Un flujo de entrada (datos e instrucciones) y otro de salida.", "Dos flujos de entrada (datos e instrucciones) y otro de salida (resultados).", "Dos flujos de entrada (datos e instrucciones) y dos de salida (resultados y errores)."], c:2},
             {u:"UD1", q:"¿Cuál es el mecanismo que no permite cambiar el modo de ejecución de usuario a núcleo?", o:["La instrucción RETI.", "La recepción de una interrupción.", "La ejecución de una operación de entrada/salida.", "La ejecución de un servicio del sistema operativo."], c:0},
-
             // UD2 - SSOO
             {u:"UD2", q:"La función pthread_join sirve para:", o:["Crear una hebra", "Detener una hebra", "Esperar a una hebra", "Iniciar una hebra"], c:2},
             {u:"UD2", q:"Un proceso es", o:["El contenido del segmento de código de un programa.", "Una entidad lógica creada por el Sistema Operativo.", "Un archivo ejecutable.", "Un servicio del sistema operativo."], c:1},
@@ -64,7 +67,6 @@
             {u:"UD2", q:"Se dice que entre dos procesos existe una relación padre-hijo si:", o:["Uno ha sido creado por el sistema operativo a instancias del otro.", "Ambos pertenecen a la misma familia de procesos.", "Ambos comparten los mismos recursos.", "Ambos forman parte de la misma aplicación."], c:0},
             {u:"UD2", q:"Es falso que el BCP de un proceso pueda encontrarse:", o:["En espacio de memoria del sistema.", "Enlazado en una lista de procesos en estado listo.", "En memoria secundaria.", "Enlazado en una lista de procesos bloqueados."], c:2},
             {u:"UD2", q:"Las hebras definidas sobre un proceso", o:["Tienen cada una un BCP diferente.", "Tienen cada una su propio segmento de código.", "Tienen cada una su propio segmento de datos.", "Tienen cada una su propio estado del procesador."], c:3},
-
             // UD3 - SSOO
             {u:"UD3", q:"Suponga una política de planificación basada en FCFS", o:["Si un proceso ocupa el procesador puede ejecutar hasta terminar.", "Un proceso esperará a que terminen todos los que han llegado antes incluso si se bloquean.", "Si un proceso se bloquea continuará ejecutando en el mismo orden tras el bloqueo.", "Si un proceso abandona el procesador es porque se ha bloqueado."], c:0},
             {u:"UD3", q:"El planificador a corto plazo:", o:["Se ejecuta para decidir qué proceso suspendido es traído a memoria.", "Se ejecuta para decidir qué proceso bloqueado es reanudado.", "Se ejecuta para decidir qué proceso es suspendido.", "Se ejecuta para decidir qué proceso en estado de listo toma el control del procesador."], c:3},
@@ -76,7 +78,6 @@
             {u:"UD3", q:"La función sched_setaffinity:", o:["No tiene efecto si hay un solo procesador.", "Puede vaciar una máscara de procesadores.", "Es una macro.", "Puede asignar procesadores a una máscara."], c:0},
             {u:"UD3", q:"¿Cuántos niveles de prioridad se establecen para la política SCHED_RR en Linux?", o:["140", "100", "139", "99"], c:3},
             {u:"UD3", q:"Suponga una política de planificación Round-Robin con quantum q=4", o:["Un proceso en estado listo no podrá esperar más de 6 u.t.", "Un proceso en estado listo podrá esperar menos de 6 u.t.", "Un proceso en estado suspendido no podrá esperar más de 6 u.t.", "Un proceso en estado bloqueado no podrá esperar más de 6 u.t."], c:1},
-
             // UD4 - SSOO
             {u:"UD4", q:"Dos procesos que utilicen memoria compartida:", o:["Tienen que tener acceso al mismo sistema de ficheros.", "Tienen que ser hijos del mismo padre.", "Tienen que ser padre-hijo.", "Tienen que pertenecer al mismo usuario."], c:0},
             {u:"UD4", q:"En un pipe:", o:["No se suele intercambiar información de manera unidireccional.", "No se suele intercambiar información de manera bidireccional.", "No hay llamadas bloqueantes.", "No se puede establecer comunicación entre procesos ubicados en máquinas distintas."], c:3},
@@ -88,7 +89,6 @@
             {u:"UD4", q:"Un recurso crítico, necesariamente:", o:["Tiene que ser accedido secuencialmente por los procesos o hebras.", "Tiene que ser accedido dentro de una región crítica.", "Tiene que ser accedido en exclusión mutua.", "Siempre tiene que poder ser accedido simultáneamente por más de un proceso."], c:1},
             {u:"UD4", q:"Sea una región crítica donde puede haber hasta dos procesos en ejecución:", o:["La región puede ser controlada por un semáforo binario.", "Si la región es controlada por un semáforo general este se inicializa a -2", "La región no puede ser controlada por un semáforo binario.", "Si la región es controlada por un semáforo general este se inicializa a cero."], c:2},
             {u:"UD4", q:"El segundo parámetro de la llamada a pthread_cond_wait corresponde a un mutex que (propiedad):", o:["Quedará en posesión del proceso que invoque a pthread_cond_wait.", "Puede estar abierto.", "Puede estar bloqueado por otro proceso.", "Quedará abierto si estaba cerrado."], c:2},
-
             // UD5 - SSOO
             {u:"UD5", q:"Una zona de memoria compartida:", o:["Pueden utilizar referencias lógicas normales para referenciar elementos en su interior.", "Comienzan siempre en la posición 1.", "Pueden contener direcciones físicas referenciadas por direcciones lógicas distintas en los espacios de memoria de los procesos que la comparten.", "No pueden contener direcciones físicas referenciadas por direcciones lógicas distintas."], c:2},
             {u:"UD5", q:"Las funciones de bibliotecas estáticas", o:["Se integran en los archivos ejecutables.", "Se invocan a través de una llamada al sistema operativo.", "No tienen que ser reenlazadas si la biblioteca se actualiza.", "No tienen que ser recompiladas si la biblioteca se actualiza."], c:0},
@@ -100,7 +100,6 @@
             {u:"UD5", q:"En memoria virtual que utilice un esquema de paginación:", o:["Dado un número de página no es posible conocer su dirección lógica de inicio.", "Dado un número de marco no es posible conocer su dirección física de inicio.", "Dado un número de página es posible conocer su dirección física de inicio.", "Dado un número de marco es posible conocer su dirección física de inicio."], c:3},
             {u:"UD5", q:"Con particiones dinámicas (fragmentación):", o:["Un proceso puede ocupar dos particiones si no hay una lo suficiente grande para ubicarlo.", "No hay fragmentación interna.", "La eficiencia del almacenamiento no depende de la partición.", "No hay fragmentación externa."], c:1},
             {u:"UD5", q:"En memoria virtual que utilice un esquema de paginación (direcciones):", o:["El segmento de código tiene que almacenarse en una página.", "Las direcciones de entrada a la MMU son direcciones físicas.", "Las direcciones lógicas coinciden con las direcciones secuenciales del proceso.", "Las direcciones físicas coinciden con las direcciones secuenciales del proceso."], c:2},
-
             // UD6 - SSOO
             {u:"UD6", q:"El tercer parámetro de la llamada al sistema open", o:["Sólo tiene sentido si el archivo indicado no existe.", "Establece los privilegios para el usuario propietario del proceso que abre el archivo.", "Establece los privilegios para el proceso que abre el archivo.", "Indican si el archivo se abre para lectura y/o escritura."], c:0},
             {u:"UD6", q:"El controlador de un dispositivo:", o:["Es el hardware del sistema al que se conecta un nuevo periférico.", "Es el software del sistema que envía órdenes al periférico.", "Puede insertar valores en los registros del procesador.", "Puede insertar valores en la memoria principal del sistema."], c:3},
@@ -159,8 +158,10 @@
         window.check = (qi, oi) => {
             const container = document.getElementById(`opts-${qi}`);
             if(container.classList.contains('disabled')) return;
+            
             const options = container.querySelectorAll('.option');
             const correct = questions[qi].c;
+            
             if(oi === correct) {
                 options[oi].classList.add('correct');
                 hits++;
@@ -169,9 +170,11 @@
                 options[correct].classList.add('correct');
                 fails++;
             }
+            
             done++;
             container.classList.add('disabled');
             updateStats();
+            
             if(done === questions.length) showFinalResults();
         };
 
@@ -179,4 +182,23 @@
             const grade = ((hits / questions.length) * 10).toFixed(2);
             document.getElementById('final-stats').innerHTML = `
                 <div style="font-size: 1.1rem">
-                    Aciertos: <span style="color:var(--success)">${hits}</span><br>
+                    Aciertos: <span style="color:var(--success); font-weight:bold">${hits}</span><br>
+                    Fallos: <span style="color:var(--error); font-weight:bold">${fails}</span><br>
+                    <strong>Nota final: ${grade} / 10</strong>
+                </div>
+            `;
+            document.getElementById('results-modal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('results-modal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+            initQuiz();
+        }
+
+        // Iniciar al cargar la página
+        initQuiz();
+    </script>
+</body>
+</html>
